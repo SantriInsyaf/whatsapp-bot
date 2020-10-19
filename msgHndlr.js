@@ -19,6 +19,7 @@ const nsfw_ = JSON.parse(fs.readFileSync('./lib/NSFW.json'))
 const welkom = JSON.parse(fs.readFileSync('./lib/welcome.json'))
 const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromImageFile } = require('remove.bg')
 
+
 moment.tz.setDefault('Asia/Jakarta').locale('id')
 
 module.exports = msgHandler = async (client, message) => {
@@ -386,8 +387,8 @@ module.exports = msgHandler = async (client, message) => {
                 }
                 client.reply(from, `➸ *Pertanyaan* : ${tanya.split('.')[0]}\n\n➸ *Jumlah jawaban* : ${Number(jum)}`, id)
                 await BrainlySearch(tanya.split('.')[0],Number(jum), function(res){
-                    res.forEach(x=>{
-                        if (x.jawaban.fotoJawaban.length == 0) {
+                    res.map(x=>{
+                        if (x.jawaban.fotoJawaban === 0) {
                             client.reply(from, `➸ *Pertanyaan* : ${x.pertanyaan}\n\n➸ *Jawaban* : ${x.jawaban.judulJawaban}\n`, id)
                         } else {
                             client.reply(from, `➸ *Pertanyaan* : ${x.pertanyaan}\n\n➸ *Jawaban* 〙: ${x.jawaban.judulJawaban}\n\n➸ *Link foto jawaban* : ${x.jawaban.fotoJawaban.join('\n')}`, id)
@@ -470,7 +471,7 @@ module.exports = msgHandler = async (client, message) => {
             const chatz = await client.getAllChatIds()
             for (let ids of chatz) {
                 var cvk = await client.getChatById(ids)
-                if (!cvk.isReadOnly) await client.sendText(ids, `[ Shinomiya Kaguya BOT Broadcast ]\n\n${msg}`)
+                if (!cvk.isReadOnly) await client.sendText(ids, `[ Miku Nakano BOT Broadcast ]\n\n${msg}`)
             }
             client.reply(from, 'Broadcast Success!', id)
             break
@@ -497,7 +498,7 @@ module.exports = msgHandler = async (client, message) => {
                 hehe += '╠➥'
                 hehe += ` @${groupMem[i].id.replace(/@c.us/g, '')}\n`
             }
-            hehe += '╚═〘 Shinomiya Kaguya BOT 〙'
+            hehe += '╚═〘 Miku Nakano BOT 〙'
             await sleep(2000)
             await client.sendTextWithMentions(from, hehe)
             break
@@ -789,6 +790,19 @@ module.exports = msgHandler = async (client, message) => {
         case '!snk':
             client.reply(from, snk, id)
             break
+        case '!kuso':
+            const request = require('request-promise')
+            client.reply(from, 'bentar sob', id)
+            if (args.length == 1) {
+            client.sendText(from,'kasih nama animenya cuk', id)
+            } else {
+            const msgBody = message.body
+            const keyword = msgBody.split('!kuso')
+            request(`https://mhankbarbar.herokuapp.com/api/kuso?q=${keyword}`, {json: true}, (err, res, body) => {
+                client.sendFileFromUrl(from, body.thumb, 'thumb.png', `Title: ${body.title}\n\n${body.link_dl}`)
+            })
+        }
+          break
         }
     } catch (err) {
         console.log(color('[ERROR]', 'red'), err)
