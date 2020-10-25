@@ -19,6 +19,7 @@ const { stdout } = require('process')
 const nsfw_ = JSON.parse(fs.readFileSync('./lib/NSFW.json'))
 const welkom = JSON.parse(fs.readFileSync('./lib/welcome.json'))
 const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromImageFile } = require('remove.bg')
+const jodoh = require('axios')
 
 moment.tz.setDefault('Asia/Jakarta').locale('id')
 
@@ -56,7 +57,7 @@ module.exports = msgHandler = async (client, message) => {
                 Iv: '[❗] Link yang anda kirim tidak valid!'
             }
         }
-        const apiKey = 'API-KEY in here'
+        const apiKey = 'tZ22PSJ1AMiX0963qBNV'
         const time = moment(t * 1000).format('DD/MM HH:mm:ss')
         const botNumber = await client.getHostNumber()
         const blockNumber = await client.getBlockedIds()
@@ -117,9 +118,9 @@ module.exports = msgHandler = async (client, message) => {
                 )
             }
             break
-	    case '!stickernobg':
+        case '!stickernobg':
         case '!stikernobg':
-	    	if (isMedia) {
+            if (isMedia) {
                 try {
                     var mediaData = await decryptMedia(message, uaOverride)
                     var imageBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`
@@ -136,19 +137,19 @@ module.exports = msgHandler = async (client, message) => {
             break
         case '!donasi':
         case '!donate':
-            client.sendLinkWithAutoPreview(from, 'https://saweria.co/donate/mhankbarbar', donate)
+            client.sendLinkWithAutoPreview(from, '', donate)
             break
         case '!tts':
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!tts [id, en, jp, ar] [teks]*, contoh *!tts id halo semua*')
             const ttsId = require('node-gtts')('id')
             const ttsEn = require('node-gtts')('en')
-	        const ttsJp = require('node-gtts')('ja')
+            const ttsJp = require('node-gtts')('ja')
             const ttsAr = require('node-gtts')('ar')
             const dataText = body.slice(8)
             if (dataText === '') return client.reply(from, 'Baka?', id)
             if (dataText.length > 500) return client.reply(from, 'Teks terlalu panjang!', id)
             var dataBhs = body.slice(5, 7)
-	        if (dataBhs == 'id') {
+            if (dataBhs == 'id') {
                 ttsId.save('./media/tts/resId.mp3', dataText, function () {
                     client.sendPtt(from, './media/tts/resId.mp3', id)
                 })
@@ -160,7 +161,7 @@ module.exports = msgHandler = async (client, message) => {
                 ttsJp.save('./media/tts/resJp.mp3', dataText, function () {
                     client.sendPtt(from, './media/tts/resJp.mp3', id)
                 })
-	        } else if (dataBhs == 'ar') {
+            } else if (dataBhs == 'ar') {
                 ttsAr.save('./media/tts/resAr.mp3', dataText, function () {
                     client.sendPtt(from, './media/tts/resAr.mp3', id)
                 })
@@ -248,7 +249,7 @@ module.exports = msgHandler = async (client, message) => {
             client.sendFileFromUrl(from, epbe.result.sdQuality, 'epbe.mp4', epbe.title, id)
             break
         case '!creator':
-            client.sendContact(from, '6285892766102@c.us')
+            client.sendContact(from, '6289654864884@c.us')
             break
         case '!ig':
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!ig [linkIg]* untuk contoh silahkan kirim perintah *!readme*')
@@ -363,7 +364,7 @@ module.exports = msgHandler = async (client, message) => {
             } else {
                 client.reply(from, '[ WRONG ] Kirim perintah *!nh [nuClear]* untuk contoh kirim perintah *!readme*')
             }
-        	break
+            break
         case '!brainly':
             if (args.length >= 2){
                 const BrainlySearch = require('./lib/brainly')
@@ -404,13 +405,13 @@ module.exports = msgHandler = async (client, message) => {
                 })
                 .then(respon => respon.json())
                 .then(resolt => {
-                	if (resolt.docs && resolt.docs.length <= 0) {
-                		client.reply(from, 'Maaf, saya tidak tau ini anime apa', id)
-                	}
+                    if (resolt.docs && resolt.docs.length <= 0) {
+                        client.reply(from, 'Maaf, saya tidak tau ini anime apa', id)
+                    }
                     const { is_adult, title, title_chinese, title_romaji, title_english, episode, similarity, filename, at, tokenthumb, anilist_id } = resolt.docs[0]
                     teks = ''
                     if (similarity < 0.92) {
-                    	teks = '*Saya memiliki keyakinan rendah dalam hal ini* :\n\n'
+                        teks = '*Saya memiliki keyakinan rendah dalam hal ini* :\n\n'
                     }
                     teks += `➸ *Title Japanese* : ${title}\n➸ *Title chinese* : ${title_chinese}\n➸ *Title Romaji* : ${title_romaji}\n➸ *Title English* : ${title_english}\n`
                     teks += `➸ *Ecchi* : ${is_adult}\n`
@@ -450,7 +451,7 @@ module.exports = msgHandler = async (client, message) => {
                 const inviteLink = await client.getGroupInviteLink(groupId);
                 client.sendLinkWithAutoPreview(from, inviteLink, `\nLink group *${name}*`)
             } else {
-            	client.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+                client.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             }
             break
         case '!bc':
@@ -459,7 +460,7 @@ module.exports = msgHandler = async (client, message) => {
             const chatz = await client.getAllChatIds()
             for (let ids of chatz) {
                 var cvk = await client.getChatById(ids)
-                if (!cvk.isReadOnly) await client.sendText(ids, `[ Shinomiya Kaguya BOT Broadcast ]\n\n${msg}`)
+                if (!cvk.isReadOnly) await client.sendText(ids, `[ Miku Nakano BOT Broadcast ]\n\n${msg}`)
             }
             client.reply(from, 'Broadcast Success!', id)
             break
@@ -485,7 +486,7 @@ module.exports = msgHandler = async (client, message) => {
                 hehe += '╠➥'
                 hehe += ` @${groupMem[i].id.replace(/@c.us/g, '')}\n`
             }
-            hehe += '╚═〘 Shinomiya Kaguya BOT 〙'
+            hehe += '╚═〘 Miku Nakano BOT 〙'
             await client.sendTextWithMentions(from, hehe)
             break
         case '!kickall':
@@ -779,6 +780,48 @@ module.exports = msgHandler = async (client, message) => {
         case '!snk':
             client.reply(from, snk, id)
             break
+        case 'assalamualaikum':
+            client.reply(from, 'waalaikumussalam', id)
+            break
+        case 'cok':
+            client.reply(from, 'cok dewe', id)
+            break
+        case 'kontol':
+            client.reply(from, 'bapakmu pecah' , id)
+            break
+        case 'mantap':
+            client.reply(from, 'jos gandos' , id)
+            break
+        case 'anjing':
+            client.reply(from, 'stress' , id)
+            break
+        case 'p':
+            client.reply(from, 'salam yang bener cok', id)
+            break
+        case 'makasih':
+            client.reply(from, 'sama-sama sob', id)
+            break
+        case 'winfo':
+            client.reply(from, 'winfo apa tuh sob?', id)
+            break            
+        case '!jodoh':
+        client.reply(from, 'aww so sweet', id)
+        if (args.length == 1) {
+            client.sendText(from,'jenenge sopo cok!', id)
+        } else {
+            const msgBody = message.body
+            const keyword = msgBody.split('!jodoh ')
+            // console.log(keyword)
+
+            const couple = keyword[1].split(' & ')
+
+            axios.get(`http://scrap.terhambar.com/jodoh?n1=${couple[0]}&n2=${couple[1]}`)
+            .then((response) =>
+                       // console.log(response.data))
+
+                        client.sendText(from, `Kecocokan pasangan: ${couple[0]} & ${couple[1]}\n\nSisi Positif: ${response.data.result.sisi.positif}\n\nSisi Negatif: ${response.data.result.sisi.negatif}`))
+                }
+            break 
         }
     } catch (err) {
         console.log(color('[ERROR]', 'red'), err)
